@@ -1,4 +1,4 @@
-package utils;
+package utils.utils;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.Assert;
@@ -60,13 +60,13 @@ public class BrowserUtils
             String sauceKey = "78130206-4593-426f-a01f-5ab6c14ca2f2";
             String sauceURL = "https://" + sauceUsername + ":" + sauceKey + "@ondemand.us-west-1.saucelabs.com:443/wd/hub";
 
-            try{
-                DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-                capabilities.setCapability("version", "107");
-                capabilities.setCapability("platform", "Windows 11");
-                driver = new RemoteWebDriver(new URL(sauceURL), capabilities);
+             try{
+            DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+            capabilities.setCapability("version", "107");
+            capabilities.setCapability("platform", "Windows 11");
+            driver = new RemoteWebDriver(new URL(sauceURL), capabilities);
             } catch (MalformedURLException e) {
-                throw new RuntimeException(e);
+            throw new RuntimeException(e);
             }
         }
         else
