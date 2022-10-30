@@ -26,7 +26,8 @@ public class BrowserUtils {
     private static WebDriver driver;
 
     public static WebDriver getDriver(){
-        initializeDriver("chrome");
+        if (driver == null)
+            initializeDriver("chrome");
         return driver;
     }
 
@@ -44,19 +45,36 @@ public class BrowserUtils {
         }
     }
 
-
     private static void initializeDriver(String browser){
-        switch (browser){
-            case "chrome":
-                WebDriverManager.chromedriver().setup();
-                driver = new ChromeDriver();
-                break;
-            case "firefox":
-                WebDriverManager.firefoxdriver().setup();
-                driver = new FirefoxDriver();
-                break;
-            default:
-                System.out.println("Invalid browser name");
+        if(ConfigReader.readProperty("runInSaucelabs").equalsIgnoreCase("true")){
+
+            String sauceUsername = "oauth-kbakaush-dae97";
+            String sauceKey = "6225a732-d54f-4127-828b-120c9cad91b8";
+            String sauceURL = "https://" + sauceUsername + ":" + sauceKey + "@ondemand.us-west-1.saucelabs.com:443/wd/hub";
+
+            try{
+                DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+                capabilities.setCapability("version", "107");
+                capabilities.setCapability("platform", "Windows 11");
+                driver = new RemoteWebDriver(new URL(sauceURL), capabilities);
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
+
+        }else {
+
+            switch (browser) {
+                case "chrome":
+                    WebDriverManager.chromedriver().setup();
+                    driver = new ChromeDriver();
+                    break;
+                case "firefox":
+                    WebDriverManager.firefoxdriver().setup();
+                    driver = new FirefoxDriver();
+                    break;
+                default:
+                    System.out.println("Invalid browser name");
+            }
         }
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
@@ -145,11 +163,11 @@ public class BrowserUtils {
         Assert.assertTrue(result);
     }
 
-    public static void isDisplayed(WebElement element){
+    public static boolean isDisplayed(WebElement element){
         waitForElementVisibility(element);
         moveIntoView(element);
         highlightElement(element);
-        Assert.assertTrue(element.isDisplayed());
+        return element.isDisplayed();
     }
 
     public static boolean isEnabled(WebElement element){
@@ -181,7 +199,6 @@ public class BrowserUtils {
         Select select = new Select(element);
         select.selectByVisibleText(text);
     }
-
 
 
 }
