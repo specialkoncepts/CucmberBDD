@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>CucmberBDD</artifactId>
+    <artifactId>CucumberBDD</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -73,7 +73,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <projectName>Sauce Demo BDD</projectName>
+                            <projectName>Automation Practice BDD</projectName>
                             <skip>false</skip>
                             <!-- output directory for the generated report -->
                             <outputDirectory>${project.build.directory}/cucumber-reports</outputDirectory>
@@ -86,4 +86,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>
